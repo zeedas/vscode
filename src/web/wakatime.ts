@@ -52,7 +52,7 @@ export class WakaTime {
       this.logger.setLevel(LogLevel.DEBUG);
     }
 
-    let extension = vscode.extensions.getExtension('WakaTime.vscode-wakatime');
+    let extension = vscode.extensions.getExtension('Zeedas.vscode-zeedas');
     this.extension = (extension != undefined && extension.packageJSON) || { version: '0.0.0' };
     this.agentName = 'vscode';
 
@@ -73,7 +73,7 @@ export class WakaTime {
   }
 
   public initializeDependencies(): void {
-    this.logger.debug(`Initializing WakaTime v${this.extension.version}`);
+    this.logger.debug(`Initializing Zeedas v${this.extension.version}`);
 
     this.statusBar = vscode.window.createStatusBarItem("com.wakatime.statusbar", vscode.StatusBarAlignment.Left, 3);
     this.statusBar.command = COMMAND_DASHBOARD;
@@ -88,19 +88,19 @@ export class WakaTime {
     this.showStatusBarTeam = showStatusBarTeam !== 'false';
 
     this.setStatusBarVisibility(this.showStatusBar);
-    this.updateStatusBarText('WakaTime Initializing...');
+    this.updateStatusBarText('Zeedas Initializing...');
 
     this.checkApiKey();
 
     this.setupEventListeners();
 
-    this.logger.debug('WakaTime initialized.');
+    this.logger.debug('Zeedas initialized.');
 
     const showCodingActivity = this.config.get('wakatime.status_bar_coding_activity');
     this.showCodingActivity = showCodingActivity !== 'false';
 
     this.updateStatusBarText();
-    this.updateStatusBarTooltip('WakaTime: Initialized');
+    this.updateStatusBarTooltip('Zeedas: Initialized');
     this.getCodingActivity();
   }
 
@@ -155,8 +155,8 @@ export class WakaTime {
     let defaultVal: string = this.config.get('wakatime.apiKey') || '';
     if (Utils.apiKeyInvalid(defaultVal)) defaultVal = '';
     let promptOptions = {
-      prompt: 'WakaTime Api Key',
-      placeHolder: 'Enter your api key from https://wakatime.com/settings',
+      prompt: 'Zeedas Api Key',
+      placeHolder: 'Enter your api key',
       value: defaultVal,
       ignoreFocusOut: true,
       validateInput: Utils.apiKeyInvalid.bind(this),
@@ -166,7 +166,7 @@ export class WakaTime {
         let invalid = Utils.apiKeyInvalid(val);
         if (!invalid) this.config.update('wakatime.apiKey', val);
         else vscode.window.setStatusBarMessage(invalid);
-      } else vscode.window.setStatusBarMessage('WakaTime api key not provided');
+      } else vscode.window.setStatusBarMessage('Zeedas api key not provided');
     });
   }
 
@@ -261,7 +261,7 @@ export class WakaTime {
   }
 
   public openDashboardWebsite(): void {
-    let url = 'https://wakatime.com/';
+    let url = 'https://zeedas.com/';
     vscode.env.openExternal(vscode.Uri.parse(url));
   }
 
@@ -418,14 +418,14 @@ export class WakaTime {
       // TODO: how to support 'dev-container', 'attached-container', 'wsl', and 'codespaces' schemes?
     }
 
-    // prevent sending the same heartbeat (https://github.com/wakatime/vscode-wakatime/issues/163)
+    // prevent sending the same heartbeat (https://github.com/zeedas/vscode/issues/163)
     if (isWrite && this.isDuplicateHeartbeat(file, time, selection)) return;
 
     const payload = {
       type: 'file',
       entity: file,
       time: Date.now() / 1000,
-      plugin: this.agentName + '/' + vscode.version + ' vscode-wakatime/' + this.extension.version,
+      plugin: this.agentName + '/' + vscode.version + ' vscode-zeedas/' + this.extension.version,
       lineno: String(selection.line + 1),
       cursorpos: String(selection.character + 1),
       lines: String(doc.lineCount),
@@ -454,7 +454,7 @@ export class WakaTime {
     this.logger.debug(`Sending heartbeat: ${JSON.stringify(payload)}`);
 
     const apiKey = this.config.get('wakatime.apiKey');
-    const url = `https://api.wakatime.com/api/v1/users/current/heartbeats?api_key=${apiKey}`;
+    const url = `https://plugin-staging.zeedas.com/api/v1/users/current/heartbeats?api_key=${apiKey}`;
 
     try {
       const response = await fetch(url, {
@@ -462,7 +462,7 @@ export class WakaTime {
         headers: {
           'Content-Type': 'application/json',
           'User-Agent':
-            this.agentName + '/' + vscode.version + ' vscode-wakatime/' + this.extension.version,
+            this.agentName + '/' + vscode.version + ' vscode-zeedas/' + this.extension.version,
         },
         body: JSON.stringify(payload),
       });
@@ -472,17 +472,17 @@ export class WakaTime {
       } else {
         this.logger.warn(`API Error ${response.status}: ${parsedJSON}`);
         if (response && response.status == 401) {
-          let error_msg = 'Invalid WakaTime Api Key';
+          let error_msg = 'Invalid Zeedas Api Key';
           if (this.showStatusBar) {
-            this.updateStatusBarText('WakaTime Error');
-            this.updateStatusBarTooltip(`WakaTime: ${error_msg}`);
+            this.updateStatusBarText('Zeedas Error');
+            this.updateStatusBarTooltip(`Zeedas: ${error_msg}`);
           }
           this.logger.error(error_msg);
         } else {
           let error_msg = `Error sending heartbeat (${response.status}); Check your browser console for more details.`;
           if (this.showStatusBar) {
-            this.updateStatusBarText('WakaTime Error');
-            this.updateStatusBarTooltip(`WakaTime: ${error_msg}`);
+            this.updateStatusBarText('Zeedas Error');
+            this.updateStatusBarTooltip(`Zeedas: ${error_msg}`);
           }
           this.logger.error(error_msg);
         }
@@ -491,8 +491,8 @@ export class WakaTime {
       this.logger.warn(`API Error: ${ex}`);
       let error_msg = `Error sending heartbeat; Check your browser console for more details.`;
       if (this.showStatusBar) {
-        this.updateStatusBarText('WakaTime Error');
-        this.updateStatusBarTooltip(`WakaTime: ${error_msg}`);
+        this.updateStatusBarText('Zeedas Error');
+        this.updateStatusBarTooltip(`Zeedas: ${error_msg}`);
       }
       this.logger.error(error_msg);
     }
@@ -515,14 +515,14 @@ export class WakaTime {
   private async _getCodingActivity() {
     this.logger.debug('Fetching coding activity for Today from api.');
     const apiKey = this.config.get('wakatime.apiKey');
-    const url = `https://api.wakatime.com/api/v1/users/current/statusbar/today?api_key=${apiKey}`;
+    const url = `https://plugin-staging.zeedas.com/api/v1/users/current/statusbar/today?api_key=${apiKey}`;
     try {
       const response = await fetch(url, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
           'User-Agent':
-            this.agentName + '/' + vscode.version + ' vscode-wakatime/' + this.extension.version,
+            this.agentName + '/' + vscode.version + ' vscode-zeedas/' + this.extension.version,
         },
       });
       const parsedJSON = await response.json();
@@ -541,7 +541,7 @@ export class WakaTime {
             if (this.showCodingActivity) {
               this.updateStatusBarText(output.trim());
               this.updateStatusBarTooltip(
-                'WakaTime: Today’s coding time. Click to visit dashboard.',
+                'Zeedas: Today’s coding time. Click to visit dashboard.',
               );
             } else {
               this.updateStatusBarText();
@@ -549,17 +549,17 @@ export class WakaTime {
             }
           } else {
             this.updateStatusBarText();
-            this.updateStatusBarTooltip('WakaTime: Calculating time spent today in background...');
+            this.updateStatusBarTooltip('Zeedas: Calculating time spent today in background...');
           }
           this.updateTeamStatusBar();
         }
       } else {
         this.logger.warn(`API Error ${response.status}: ${parsedJSON}`);
         if (response && response.status == 401) {
-          let error_msg = 'Invalid WakaTime Api Key';
+          let error_msg = 'Invalid Zeedas Api Key';
           if (this.showStatusBar) {
-            this.updateStatusBarText('WakaTime Error');
-            this.updateStatusBarTooltip(`WakaTime: ${error_msg}`);
+            this.updateStatusBarText('Zeedas Error');
+            this.updateStatusBarTooltip(`Zeedas: ${error_msg}`);
           }
           this.logger.error(error_msg);
         } else {
@@ -597,11 +597,11 @@ export class WakaTime {
 
     this.logger.debug('Fetching devs for currently focused file from api.');
     const apiKey = this.config.get('wakatime.apiKey');
-    const url = `https://api.wakatime.com/api/v1/users/current/file_experts?api_key=${apiKey}`;
+    const url = `https://plugin-staging.zeedas.com/api/v1/users/current/file_experts?api_key=${apiKey}`;
 
     const payload = {
       entity: file,
-      plugin: this.agentName + '/' + vscode.version + ' vscode-wakatime/' + this.extension.version,
+      plugin: this.agentName + '/' + vscode.version + ' vscode-zeedas/' + this.extension.version,
     };
 
     const project = this.getProjectName();
@@ -618,7 +618,7 @@ export class WakaTime {
         headers: {
           'Content-Type': 'application/json',
           'User-Agent':
-            this.agentName + '/' + vscode.version + ' vscode-wakatime/' + this.extension.version,
+            this.agentName + '/' + vscode.version + ' vscode-zeedas/' + this.extension.version,
         },
         body: JSON.stringify(payload),
       });
@@ -656,7 +656,7 @@ export class WakaTime {
         this.updateTeamStatusBarTextForOther();
         this.logger.warn(`API Error ${response.status}: ${parsedJSON}`);
         if (response && response.status == 401) {
-          this.logger.error('Invalid WakaTime Api Key');
+          this.logger.error('Invalid Zeedas Api Key');
         } else {
           let error_msg = `Error fetching devs for currently focused file (${response.status}); Check your browser console for more details.`;
           this.logger.debug(error_msg);

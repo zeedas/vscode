@@ -74,7 +74,7 @@ export class WakaTime {
 
       this.dependencies = new Dependencies(this.options, this.logger, this.resourcesLocation);
 
-      let extension = vscode.extensions.getExtension('WakaTime.vscode-wakatime');
+      let extension = vscode.extensions.getExtension('Zeedas.vscode-zeedas');
       this.extension = (extension != undefined && extension.packageJSON) || { version: '0.0.0' };
       this.agentName = this.appNames[vscode.env.appName] || 'vscode';
 
@@ -110,7 +110,7 @@ export class WakaTime {
   }
 
   public initializeDependencies(): void {
-    this.logger.debug(`Initializing WakaTime v${this.extension.version}`);
+    this.logger.debug(`Initializing Zeedas v${this.extension.version}`);
 
     this.statusBar = vscode.window.createStatusBarItem("com.wakatime.statusbar", vscode.StatusBarAlignment.Left, 3);
     this.statusBar.command = COMMAND_DASHBOARD;
@@ -127,7 +127,7 @@ export class WakaTime {
         (statusBarEnabled: Setting) => {
           this.showStatusBar = statusBarEnabled.value !== 'false';
           this.setStatusBarVisibility(this.showStatusBar);
-          this.updateStatusBarText('WakaTime Initializing...');
+          this.updateStatusBarText('Zeedas Initializing...');
 
           this.checkApiKey();
 
@@ -141,9 +141,9 @@ export class WakaTime {
               this.showCodingActivity = showCodingActivity.value !== 'false';
 
               this.dependencies.checkAndInstallCli(() => {
-                this.logger.debug('WakaTime initialized');
+                this.logger.debug('Zeedas initialized');
                 this.updateStatusBarText();
-                this.updateStatusBarTooltip('WakaTime: Initialized');
+                this.updateStatusBarTooltip('Zeedas: Initialized');
                 this.getCodingActivity();
               });
             },
@@ -205,8 +205,8 @@ export class WakaTime {
     this.options.getApiKey((defaultVal: string | null) => {
       if (Utils.apiKeyInvalid(defaultVal ?? undefined)) defaultVal = '';
       let promptOptions = {
-        prompt: 'WakaTime Api Key',
-        placeHolder: 'Enter your api key from https://wakatime.com/settings',
+        prompt: 'Zeedas Api Key',
+        placeHolder: 'Enter your api key',
         value: defaultVal!,
         ignoreFocusOut: true,
         password: true,
@@ -218,7 +218,7 @@ export class WakaTime {
           if (!invalid) {
             this.options.setSetting('settings', 'api_key', val, false);
           } else vscode.window.setStatusBarMessage(invalid);
-        } else vscode.window.setStatusBarMessage('WakaTime api key not provided');
+        } else vscode.window.setStatusBarMessage('Zeedas api key not provided');
       });
     });
   }
@@ -228,7 +228,7 @@ export class WakaTime {
       let defaultVal = proxy.value;
       if (!defaultVal) defaultVal = '';
       let promptOptions = {
-        prompt: 'WakaTime Proxy',
+        prompt: 'Zeedas Proxy',
         placeHolder: `Proxy format is https://user:pass@host:port (current value \"${defaultVal}\")`,
         value: defaultVal,
         ignoreFocusOut: true,
@@ -339,7 +339,7 @@ export class WakaTime {
   }
 
   public openDashboardWebsite(): void {
-    let url = 'https://wakatime.com/';
+    let url = 'https://zeedas.com/';
     vscode.env.openExternal(vscode.Uri.parse(url));
   }
 
@@ -508,7 +508,7 @@ export class WakaTime {
       // TODO: how to support 'dev-container', 'attached-container', 'wsl', and 'codespaces' schemes?
     }
 
-    // prevent sending the same heartbeat (https://github.com/wakatime/vscode-wakatime/issues/163)
+    // prevent sending the same heartbeat (https://github.com/zeedas/vscode/issues/163)
     if (isWrite && this.isDuplicateHeartbeat(file, time, selection)) return;
 
     let args: string[] = [];
@@ -516,7 +516,7 @@ export class WakaTime {
     args.push('--entity', Utils.quote(file));
 
     let user_agent =
-      this.agentName + '/' + vscode.version + ' vscode-wakatime/' + this.extension.version;
+      this.agentName + '/' + vscode.version + ' vscode-zeedas/' + this.extension.version;
     args.push('--plugin', Utils.quote(user_agent));
 
     args.push('--lineno', String(selection.line + 1));
@@ -572,7 +572,7 @@ export class WakaTime {
         if (this.showStatusBar) {
           if (!this.showCodingActivity) this.updateStatusBarText();
           this.updateStatusBarTooltip(
-            'WakaTime: working offline... coding activity will sync next time we are online',
+            'Zeedas: working offline... coding activity will sync next time we are online',
           );
         }
         this.logger.warn(
@@ -581,22 +581,22 @@ export class WakaTime {
       } else if (code == 103) {
         let error_msg = `Config parsing error (103); Check your ${this.options.getLogFile()} file for more details`;
         if (this.showStatusBar) {
-          this.updateStatusBarText('WakaTime Error');
-          this.updateStatusBarTooltip(`WakaTime: ${error_msg}`);
+          this.updateStatusBarText('Zeedas Error');
+          this.updateStatusBarTooltip(`Zeedas: ${error_msg}`);
         }
         this.logger.error(error_msg);
       } else if (code == 104) {
         let error_msg = 'Invalid Api Key (104); Make sure your Api Key is correct!';
         if (this.showStatusBar) {
-          this.updateStatusBarText('WakaTime Error');
-          this.updateStatusBarTooltip(`WakaTime: ${error_msg}`);
+          this.updateStatusBarText('Zeedas Error');
+          this.updateStatusBarTooltip(`Zeedas: ${error_msg}`);
         }
         this.logger.error(error_msg);
       } else {
         let error_msg = `Unknown Error (${code}); Check your ${this.options.getLogFile()} file for more details`;
         if (this.showStatusBar) {
-          this.updateStatusBarText('WakaTime Error');
-          this.updateStatusBarTooltip(`WakaTime: ${error_msg}`);
+          this.updateStatusBarText('Zeedas Error');
+          this.updateStatusBarTooltip(`Zeedas: ${error_msg}`);
         }
         this.logger.error(error_msg);
       }
@@ -621,7 +621,7 @@ export class WakaTime {
     if (!this.dependencies.isCliInstalled()) return;
 
     let user_agent =
-      this.agentName + '/' + vscode.version + ' vscode-wakatime/' + this.extension.version;
+      this.agentName + '/' + vscode.version + ' vscode-zeedas/' + this.extension.version;
     let args = ['--today', '--output', 'json', '--plugin', Utils.quote(user_agent)];
 
     const apiKey = this.options.getApiKeyFromEnv();
@@ -676,7 +676,7 @@ export class WakaTime {
                 if (this.showCodingActivity) {
                   this.updateStatusBarText(jsonData.text.trim());
                   this.updateStatusBarTooltip(
-                    'WakaTime: Today’s coding time. Click to visit dashboard.',
+                    'Zeedas: Today’s coding time. Click to visit dashboard.',
                   );
                 } else {
                   this.updateStatusBarText();
@@ -685,14 +685,14 @@ export class WakaTime {
               } else {
                 this.updateStatusBarText();
                 this.updateStatusBarTooltip(
-                  'WakaTime: Calculating time spent today in background...',
+                  'Zeedas: Calculating time spent today in background...',
                 );
               }
               this.updateTeamStatusBar();
             } else {
               this.updateStatusBarText();
               this.updateStatusBarTooltip(
-                'WakaTime: Calculating time spent today in background...',
+                'Zeedas: Calculating time spent today in background...',
               );
             }
           }
@@ -735,7 +735,7 @@ export class WakaTime {
     }
 
     let user_agent =
-      this.agentName + '/' + vscode.version + ' vscode-wakatime/' + this.extension.version;
+      this.agentName + '/' + vscode.version + ' vscode-zeedas/' + this.extension.version;
     let args = ['--output', 'json', '--plugin', Utils.quote(user_agent)];
 
     args.push('--file-experts', Utils.quote(file));

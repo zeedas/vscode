@@ -281,7 +281,7 @@ export class Options {
         this.logger.warn(`Unable to get api key: ${err}`);
         if (`${err}`.includes('spawn EPERM')) {
           vscode.window.showErrorMessage(
-            'Microsoft Defender is blocking WakaTime. Please allow WakaTime to run so it can upload code stats to your dashboard.',
+            'Microsoft Defender is blocking Zeedas. Please allow Zeedas to run so it can upload code stats to your dashboard.',
           );
         }
         callback(null);
@@ -292,7 +292,7 @@ export class Options {
     return vscode.workspace.getConfiguration().get('wakatime.apiKey') || '';
   }
 
-  // Support for gitpod.io https://github.com/wakatime/vscode-wakatime/pull/220
+  // Support for gitpod.io https://github.com/zeedas/vscode/pull/220
   public getApiKeyFromEnv(): string {
     if (this.cache.api_key_from_env !== undefined) return this.cache.api_key_from_env;
 
