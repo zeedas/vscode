@@ -1,7 +1,6 @@
 # Zeedas for Visual Studio Code
 
 [Zeedas][zeedas] - Data Insight for Engineering Excellence.
-.
 
 ## Installation
 
