@@ -67,7 +67,7 @@ export class WakaTime {
   }
 
   public initialize(): void {
-    this.options.setSetting('settings', 'api_url', 'https://plugin-staging.zeedas.com/api/v1', false);
+    this.options.setSetting('settings', 'api_url', 'https://plugin.zeedas.com/api/v1', false);
     this.options.getSetting('settings', 'debug', false, (setting: Setting) => {
       if (setting.value === 'true') {
         this.logger.setLevel(LogLevel.DEBUG);

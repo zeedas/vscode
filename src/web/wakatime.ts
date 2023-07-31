@@ -454,7 +454,7 @@ export class WakaTime {
     this.logger.debug(`Sending heartbeat: ${JSON.stringify(payload)}`);
 
     const apiKey = this.config.get('wakatime.apiKey');
-    const url = `https://plugin-staging.zeedas.com/api/v1/users/current/heartbeats?api_key=${apiKey}`;
+    const url = `https://plugin.zeedas.com/api/v1/users/current/heartbeats?api_key=${apiKey}`;
 
     try {
       const response = await fetch(url, {
@@ -515,7 +515,7 @@ export class WakaTime {
   private async _getCodingActivity() {
     this.logger.debug('Fetching coding activity for Today from api.');
     const apiKey = this.config.get('wakatime.apiKey');
-    const url = `https://plugin-staging.zeedas.com/api/v1/users/current/statusbar/today?api_key=${apiKey}`;
+    const url = `https://plugin.zeedas.com/api/v1/users/current/statusbar/today?api_key=${apiKey}`;
     try {
       const response = await fetch(url, {
         method: 'GET',
@@ -597,7 +597,7 @@ export class WakaTime {
 
     this.logger.debug('Fetching devs for currently focused file from api.');
     const apiKey = this.config.get('wakatime.apiKey');
-    const url = `https://plugin-staging.zeedas.com/api/v1/users/current/file_experts?api_key=${apiKey}`;
+    const url = `https://plugin.zeedas.com/api/v1/users/current/file_experts?api_key=${apiKey}`;
 
     const payload = {
       entity: file,
