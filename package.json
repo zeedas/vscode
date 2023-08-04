@@ -1,11 +1,11 @@
 {
   "name": "vscode-zeedas",
-  "displayName": "Zeedas",
+  "displayName": "ZeedasBeta",
   "description": "Data Insight for Engineering Excellence.",
-  "version": "0.1.0",
-  "publisher": "Zeedas",
+  "version": "0.2.0",
+  "publisher": "ZeedasBeta",
   "author": {
-    "name": "Zeedas"
+    "name": "ZeedasBeta"
   },
   "categories": [
     "Other"
@@ -57,47 +57,47 @@
     "commands": [
       {
         "command": "wakatime.apikey",
-        "title": "Zeedas: Api Key"
+        "title": "ZeedasBeta: Api Key"
       },
       {
         "command": "wakatime.proxy",
-        "title": "Zeedas: Proxy"
+        "title": "ZeedasBeta: Proxy"
       },
       {
         "command": "wakatime.debug",
-        "title": "Zeedas: Debug"
+        "title": "ZeedasBeta: Debug"
       },
       {
         "command": "wakatime.disable",
-        "title": "Zeedas: Disable/Enable Extension"
+        "title": "ZeedasBeta: Disable/Enable Extension"
       },
       {
         "command": "wakatime.status_bar_enabled",
-        "title": "Zeedas: Status Bar Enabled"
+        "title": "ZeedasBeta: Status Bar Enabled"
       },
       {
         "command": "wakatime.status_bar_coding_activity",
-        "title": "Zeedas: Status Bar Coding Activity"
+        "title": "ZeedasBeta: Status Bar Coding Activity"
       },
       {
         "command": "wakatime.dashboard",
-        "title": "Zeedas: Open Dashboard"
+        "title": "ZeedasBeta: Open Dashboard"
       },
       {
         "command": "wakatime.config_file",
-        "title": "Zeedas: Open Config File..."
+        "title": "ZeedasBeta: Open Config File..."
       },
       {
         "command": "wakatime.log_file",
-        "title": "Zeedas: Open Log File..."
+        "title": "ZeedasBeta: Open Log File..."
       }
     ],
     "configuration": {
-      "title": "Zeedas",
+      "title": "ZeedasBeta",
       "properties": {
         "wakatime.apiKey": {
           "type": "string",
-          "description": "Zeedas Api Key.",
+          "description": "ZeedasBeta Api Key.",
           "scope": "application"
         }
       }

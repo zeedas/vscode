@@ -281,7 +281,7 @@ export class Options {
         this.logger.warn(`Unable to get api key: ${err}`);
         if (`${err}`.includes('spawn EPERM')) {
           vscode.window.showErrorMessage(
-            'Microsoft Defender is blocking Zeedas. Please allow Zeedas to run so it can upload code stats to your dashboard.',
+            'Microsoft Defender is blocking Zeedas. Please allow Zeedas Beta to run so it can upload code stats to your dashboard.',
           );
         }
         callback(null);

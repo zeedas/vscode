@@ -1,4 +1,4 @@
-# Zeedas for Visual Studio Code
+# Zeedas Beta for Visual Studio Code
 
 [Zeedas][zeedas] - Data Insight for Engineering Excellence.
 
@@ -13,7 +13,7 @@
 
 3. Enter your [api key][api key], then press `enter`.
 
-    > (If you’re not prompted, press `F1` or `⌘ + Shift + P` then type `Zeedas API Key`.)
+    > (If you’re not prompted, press `F1` or `⌘ + Shift + P` then type `Zeedas Beta API Key`.)
 
 ## Configuring
 
@@ -45,7 +45,7 @@ Next, open your Developer Console to view logs and errors:
 
 Many thanks to all [contributors](AUTHORS)!
 
-Made with :heart: by the [Zeedas Team][about].
+Made with :heart: by the [Zeedas Beta Team][about].
 
 [zeedas]: https://zeedas.com
 [issues]: https://github.com/zeedas/vscode/issues

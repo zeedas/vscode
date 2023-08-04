@@ -52,7 +52,7 @@ export class WakaTime {
       this.logger.setLevel(LogLevel.DEBUG);
     }
 
-    let extension = vscode.extensions.getExtension('Zeedas.vscode-zeedas');
+    let extension = vscode.extensions.getExtension('ZeedasBeta.vscode-zeedas');
     this.extension = (extension != undefined && extension.packageJSON) || { version: '0.0.0' };
     this.agentName = 'vscode';
 
@@ -73,7 +73,7 @@ export class WakaTime {
   }
 
   public initializeDependencies(): void {
-    this.logger.debug(`Initializing Zeedas v${this.extension.version}`);
+    this.logger.debug(`Initializing Zeedas Beta v${this.extension.version}`);
 
     this.statusBar = vscode.window.createStatusBarItem("com.wakatime.statusbar", vscode.StatusBarAlignment.Left, 3);
     this.statusBar.command = COMMAND_DASHBOARD;
@@ -88,19 +88,19 @@ export class WakaTime {
     this.showStatusBarTeam = showStatusBarTeam !== 'false';
 
     this.setStatusBarVisibility(this.showStatusBar);
-    this.updateStatusBarText('Zeedas Initializing...');
+    this.updateStatusBarText('ZeedasBeta Initializing...');
 
     this.checkApiKey();
 
     this.setupEventListeners();
 
-    this.logger.debug('Zeedas initialized.');
+    this.logger.debug('ZeedasBeta initialized.');
 
     const showCodingActivity = this.config.get('wakatime.status_bar_coding_activity');
     this.showCodingActivity = showCodingActivity !== 'false';
 
     this.updateStatusBarText();
-    this.updateStatusBarTooltip('Zeedas: Initialized');
+    this.updateStatusBarTooltip('ZeedasBeta: Initialized');
     this.getCodingActivity();
   }
 
@@ -155,7 +155,7 @@ export class WakaTime {
     let defaultVal: string = this.config.get('wakatime.apiKey') || '';
     if (Utils.apiKeyInvalid(defaultVal)) defaultVal = '';
     let promptOptions = {
-      prompt: 'Zeedas Api Key',
+      prompt: 'ZeedasBeta Api Key',
       placeHolder: 'Enter your api key',
       value: defaultVal,
       ignoreFocusOut: true,
@@ -166,7 +166,7 @@ export class WakaTime {
         let invalid = Utils.apiKeyInvalid(val);
         if (!invalid) this.config.update('wakatime.apiKey', val);
         else vscode.window.setStatusBarMessage(invalid);
-      } else vscode.window.setStatusBarMessage('Zeedas api key not provided');
+      } else vscode.window.setStatusBarMessage('ZeedasBeta api key not provided');
     });
   }
 
@@ -472,16 +472,16 @@ export class WakaTime {
       } else {
         this.logger.warn(`API Error ${response.status}: ${parsedJSON}`);
         if (response && response.status == 401) {
-          let error_msg = 'Invalid Zeedas Api Key';
+          let error_msg = 'Invalid Zeedas Beta Api Key';
           if (this.showStatusBar) {
-            this.updateStatusBarText('Zeedas Error');
+            this.updateStatusBarText('ZeedasBeta Error');
             this.updateStatusBarTooltip(`Zeedas: ${error_msg}`);
           }
           this.logger.error(error_msg);
         } else {
           let error_msg = `Error sending heartbeat (${response.status}); Check your browser console for more details.`;
           if (this.showStatusBar) {
-            this.updateStatusBarText('Zeedas Error');
+            this.updateStatusBarText('ZeedasBeta Error');
             this.updateStatusBarTooltip(`Zeedas: ${error_msg}`);
           }
           this.logger.error(error_msg);
@@ -491,7 +491,7 @@ export class WakaTime {
       this.logger.warn(`API Error: ${ex}`);
       let error_msg = `Error sending heartbeat; Check your browser console for more details.`;
       if (this.showStatusBar) {
-        this.updateStatusBarText('Zeedas Error');
+        this.updateStatusBarText('ZeedasBeta Error');
         this.updateStatusBarTooltip(`Zeedas: ${error_msg}`);
       }
       this.logger.error(error_msg);
@@ -541,7 +541,7 @@ export class WakaTime {
             if (this.showCodingActivity) {
               this.updateStatusBarText(output.trim());
               this.updateStatusBarTooltip(
-                'Zeedas: Today’s coding time. Click to visit dashboard.',
+                'ZeedasBeta: Today’s coding time. Click to visit dashboard.',
               );
             } else {
               this.updateStatusBarText();
@@ -549,16 +549,16 @@ export class WakaTime {
             }
           } else {
             this.updateStatusBarText();
-            this.updateStatusBarTooltip('Zeedas: Calculating time spent today in background...');
+            this.updateStatusBarTooltip('ZeedasBeta: Calculating time spent today in background...');
           }
           this.updateTeamStatusBar();
         }
       } else {
         this.logger.warn(`API Error ${response.status}: ${parsedJSON}`);
         if (response && response.status == 401) {
-          let error_msg = 'Invalid Zeedas Api Key';
+          let error_msg = 'Invalid Zeedas Beta Api Key';
           if (this.showStatusBar) {
-            this.updateStatusBarText('Zeedas Error');
+            this.updateStatusBarText('ZeedasBeta Error');
             this.updateStatusBarTooltip(`Zeedas: ${error_msg}`);
           }
           this.logger.error(error_msg);
@@ -656,7 +656,7 @@ export class WakaTime {
         this.updateTeamStatusBarTextForOther();
         this.logger.warn(`API Error ${response.status}: ${parsedJSON}`);
         if (response && response.status == 401) {
-          this.logger.error('Invalid Zeedas Api Key');
+          this.logger.error('Invalid Zeedas Beta Api Key');
         } else {
           let error_msg = `Error fetching devs for currently focused file (${response.status}); Check your browser console for more details.`;
           this.logger.debug(error_msg);
